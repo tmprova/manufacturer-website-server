@@ -1,10 +1,5 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const client = require("../mongoClient/client");
 
-const client = new MongoClient(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUniFiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
 const mongoConnenct = async () => {
   try {
     await client.connect();
@@ -14,6 +9,6 @@ const mongoConnenct = async () => {
   }
 };
 
-// mongoConnenct().catch(console.dir);
+mongoConnenct().catch(console.dir);
 
 module.exports = mongoConnenct;
