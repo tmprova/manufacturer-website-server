@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const verifyJwt = require("../middleTier/verifyJWT");
 
 const {
   getDb,
@@ -11,6 +13,10 @@ const {
   getProducts,
   getProduct,
   deleteProduct,
+  addUser,
+  allUser,
+  getUser,
+  updateUser,
 } = require("../controllers/testControllers");
 
 const testRouter = express.Router();
@@ -27,6 +33,10 @@ testRouter.post("/add", addProduct);
 testRouter.get("/allitem", getProducts);
 testRouter.get("/item/:id", getProduct);
 testRouter.delete("/remove/:id", deleteProduct);
+testRouter.get("/allUsers", verifyJwt, allUser);
+testRouter.get("getUser", getUser);
+testRouter.put("/user/:email", addUser);
+testRouter.put("/update/:email", updateUser);
 
 testRouter.delete("/testing2/:id", deleteTest);
 

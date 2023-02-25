@@ -1,6 +1,12 @@
 const { ObjectId } = require("mongodb");
-const { db, testAgain, productCollection } = require("../models/models");
-
+const {
+  db,
+  testAgain,
+  productCollection,
+  userCollection,
+} = require("../models/models");
+const jwt = require("jsonwebtoken");
+//
 const getALLData1 = async (req, res) => {
   try {
     const query = {};
@@ -130,6 +136,65 @@ const deleteProduct = async (req, res) => {
     res.status(500).json(error);
   }
 };
+// user controller
+const allUser = async (req, res) => {
+  try {
+    const result = await userCollection.find().toArray();
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+    // console.log(error.message);
+  }
+};
+
+const getUser = async (req, res) => {
+  try {
+    const email = req.query.email;
+    const query = { email: email };
+    const result = await userCollection.findOne(query);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+    console.log(error.message);
+  }
+};
+
+const addUser = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = req.body;
+    const filter = { email: email };
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: user,
+    };
+    const result = await userCollection.updateOne(filter, updateDoc, options);
+    const token = jwt.sign({ email: email }, process.env.ACCES_TOKEN_SECRET, {
+      expiresIn: "3d",
+    });
+    res.status(200).send({ result, token });
+  } catch (error) {
+    res.status(500).json(error.message);
+    // console.log(error.message);
+  }
+};
+const updateUser = async (req, res) => {
+  try {
+    const email = req.params.email;
+    const user = req.body;
+    const filter = { email: email };
+    const options = { upsert: true };
+    const updateDoc = {
+      $set: user,
+    };
+    const result = await userCollection.updateOne(filter, updateDoc, options);
+
+    res.status(200).send({ result, token });
+  } catch (error) {
+    res.status(500).json(error.message);
+    // console.log(error.message);
+  }
+};
 
 module.exports = {
   getALLData1,
@@ -142,4 +207,8 @@ module.exports = {
   getProducts,
   getProduct,
   deleteProduct,
+  allUser,
+  getUser,
+  addUser,
+  updateUser,
 };
