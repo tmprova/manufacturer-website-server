@@ -195,6 +195,52 @@ const updateUser = async (req, res) => {
     // console.log(error.message);
   }
 };
+// delete user
+const deleteuser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const result = await userCollection.deleteOne(query);
+    res.status(200).send(result);
+    // const product = await Product.findByIdAndDelete(req.params.id);
+    // res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+// make admin controller
+
+const makeAdmin = async (req, res) => {
+  try {
+    const email = req.params.email;
+    // const user = req.body;
+    const filter = { email: email };
+    // const options = { upsert: true };
+    const updateDoc = {
+      $set: { role: "Admin" },
+    };
+    const result = await userCollection.updateOne(filter, updateDoc);
+
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+    // console.log(error.message);
+  }
+};
+const getAdmin = async (req, res) => {
+  try {
+    const email = req.params.email;
+
+    const user = await userCollection.findOne({ email });
+    const isAdmin = user?.role === "Admin";
+
+    res.status(200).send({ admin: isAdmin });
+  } catch (error) {
+    res.status(500).json(error.message);
+    // console.log(error.message);
+  }
+};
 
 module.exports = {
   getALLData1,
@@ -211,4 +257,7 @@ module.exports = {
   getUser,
   addUser,
   updateUser,
+  deleteuser,
+  makeAdmin,
+  getAdmin,
 };

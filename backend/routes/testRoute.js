@@ -17,6 +17,9 @@ const {
   allUser,
   getUser,
   updateUser,
+  makeAdmin,
+  deleteuser,
+  getAdmin,
 } = require("../controllers/testControllers");
 
 const testRouter = express.Router();
@@ -29,14 +32,20 @@ testRouter.get("/testing1/:id", getDb);
 testRouter.get("/testing2/:id", getest);
 
 testRouter.post("/testing1", addDb);
+//
 testRouter.post("/add", addProduct);
 testRouter.get("/allitem", getProducts);
 testRouter.get("/item/:id", getProduct);
 testRouter.delete("/remove/:id", deleteProduct);
+//
 testRouter.get("/allUsers", verifyJwt, allUser);
 testRouter.get("getUser", getUser);
 testRouter.put("/user/:email", addUser);
 testRouter.put("/update/:email", updateUser);
+testRouter.delete("/user/delete/:id", deleteuser);
+// admin routes
+testRouter.put("/user/admin/:email", verifyJwt, makeAdmin);
+testRouter.get("/admin/:email", verifyJwt, getAdmin);
 
 testRouter.delete("/testing2/:id", deleteTest);
 
