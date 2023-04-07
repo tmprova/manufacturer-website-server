@@ -20,7 +20,9 @@ const {
   makeAdmin,
   deleteuser,
   getAdmin,
+  verifyAdmin,
 } = require("../controllers/testControllers");
+// const verifyAdmin = require("../middleTier/verifyAdmin");
 
 const testRouter = express.Router();
 testRouter.get("/testing", getALLData1);
@@ -33,7 +35,7 @@ testRouter.get("/testing2/:id", getest);
 
 testRouter.post("/testing1", addDb);
 //
-testRouter.post("/add", addProduct);
+testRouter.post("/add", verifyJwt, verifyAdmin, addProduct);
 testRouter.get("/allitem", getProducts);
 testRouter.get("/item/:id", getProduct);
 testRouter.delete("/remove/:id", deleteProduct);
@@ -44,7 +46,7 @@ testRouter.put("/user/:email", addUser);
 testRouter.put("/update/:email", updateUser);
 testRouter.delete("/user/delete/:id", deleteuser);
 // admin routes
-testRouter.put("/user/admin/:email", verifyJwt, makeAdmin);
+testRouter.put("/user/admin/:email", verifyJwt, verifyAdmin, makeAdmin);
 testRouter.get("/admin/:email", verifyJwt, getAdmin);
 
 testRouter.delete("/testing2/:id", deleteTest);

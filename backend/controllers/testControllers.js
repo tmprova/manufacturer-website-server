@@ -241,6 +241,14 @@ const getAdmin = async (req, res) => {
     // console.log(error.message);
   }
 };
+// verifyAdmin middletier
+const verifyAdmin = async (req, res, next) => {
+  const requester = req.decoded.email;
+  const requestedAccount = await userCollection.findOne({ email: requester });
+  if (requestedAccount.role === "Admin") {
+    next();
+  } else res.status(403).send({ message: "Forbidden Access" });
+};
 
 module.exports = {
   getALLData1,
@@ -260,4 +268,5 @@ module.exports = {
   deleteuser,
   makeAdmin,
   getAdmin,
+  verifyAdmin,
 };
