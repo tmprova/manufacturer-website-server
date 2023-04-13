@@ -276,6 +276,27 @@ const orders = async (req, res) => {
   }
 };
 
+const findOrderItem = async (req, res) => {
+  try {
+    const query = { email: req.query.email };
+    const result = await orderCollection.find(query).toArray();
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+const cancelOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const result = await orderCollection.deleteOne(query);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   getALLData1,
   getALLData2,
@@ -297,4 +318,6 @@ module.exports = {
   verifyAdmin,
   getOrders,
   orders,
+  findOrderItem,
+  cancelOrder,
 };

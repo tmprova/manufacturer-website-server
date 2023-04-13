@@ -23,6 +23,8 @@ const {
   verifyAdmin,
   getOrders,
   orders,
+  findOrderItem,
+  cancelOrder,
 } = require("../controllers/testControllers");
 // const verifyAdmin = require("../middleTier/verifyAdmin");
 
@@ -54,6 +56,8 @@ testRouter.get("/admin/:email", verifyJwt, getAdmin);
 // purchase @ orders
 testRouter.get("/orders/:id", verifyJwt, getOrders);
 testRouter.post("/orders", orders);
+testRouter.get("/findItems", findOrderItem);
+testRouter.delete("/deleteOrder/:id", cancelOrder);
 
 testRouter.delete("/testing2/:id", deleteTest);
 
