@@ -25,6 +25,8 @@ const {
   orders,
   findOrderItem,
   cancelOrder,
+  postReview,
+  getReview,
 } = require("../controllers/testControllers");
 // const verifyAdmin = require("../middleTier/verifyAdmin");
 
@@ -45,7 +47,7 @@ testRouter.get("/item/:id", getProduct);
 testRouter.delete("/remove/:id", deleteProduct);
 //
 testRouter.get("/allUsers", verifyJwt, allUser);
-testRouter.get("getUser", getUser);
+testRouter.get("user", getUser);
 testRouter.put("/user/:email", addUser);
 testRouter.put("/update/:email", updateUser);
 testRouter.delete("/user/delete/:id", deleteuser);
@@ -58,6 +60,10 @@ testRouter.get("/orders/:id", verifyJwt, getOrders);
 testRouter.post("/orders", orders);
 testRouter.get("/findItems", findOrderItem);
 testRouter.delete("/deleteOrder/:id", cancelOrder);
+
+// reviews
+testRouter.post("/user/review", verifyJwt, postReview);
+testRouter.get("/user/reviews", getReview);
 
 testRouter.delete("/testing2/:id", deleteTest);
 

@@ -5,6 +5,7 @@ const {
   productCollection,
   userCollection,
   orderCollection,
+  reviewCollection,
 } = require("../models/models");
 const jwt = require("jsonwebtoken");
 
@@ -297,6 +298,26 @@ const cancelOrder = async (req, res) => {
   }
 };
 
+// review controller
+
+const postReview = async (req, res) => {
+  try {
+    const review = req.body;
+    const result = await reviewCollection.insertOne(review);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+const getReview = async (req, res) => {
+  try {
+    const result = await reviewCollection.find().toArray();
+    res.status(200).send(result.reverse());
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
 module.exports = {
   getALLData1,
   getALLData2,
@@ -320,4 +341,6 @@ module.exports = {
   orders,
   findOrderItem,
   cancelOrder,
+  postReview,
+  getReview,
 };
