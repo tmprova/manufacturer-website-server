@@ -4,8 +4,19 @@ const {
   testAgain,
   productCollection,
   userCollection,
+  orderCollection,
 } = require("../models/models");
 const jwt = require("jsonwebtoken");
+
+// verifyAdmin middletier
+const verifyAdmin = async (req, res, next) => {
+  const requester = req.decoded.email;
+  const requestedAccount = await userCollection.findOne({ email: requester });
+  if (requestedAccount.role === "Admin") {
+    next();
+  } else res.status(403).send({ message: "Forbidden Access" });
+};
+
 //
 const getALLData1 = async (req, res) => {
   try {
@@ -241,13 +252,28 @@ const getAdmin = async (req, res) => {
     // console.log(error.message);
   }
 };
-// verifyAdmin middletier
-const verifyAdmin = async (req, res, next) => {
-  const requester = req.decoded.email;
-  const requestedAccount = await userCollection.findOne({ email: requester });
-  if (requestedAccount.role === "Admin") {
-    next();
-  } else res.status(403).send({ message: "Forbidden Access" });
+
+// purchase & order controllers
+
+const getOrders = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const query = { _id: ObjectId(id) };
+    const result = await productCollection.findOne(query);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
+};
+
+const orders = async (req, res) => {
+  try {
+    const order = req.body;
+    const result = await orderCollection.insertOne(order);
+    res.status(200).send({ success: true, data: result });
+  } catch (error) {
+    res.status(500).json(error.message);
+  }
 };
 
 module.exports = {
@@ -269,4 +295,6 @@ module.exports = {
   makeAdmin,
   getAdmin,
   verifyAdmin,
+  getOrders,
+  orders,
 };

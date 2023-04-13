@@ -21,6 +21,8 @@ const {
   deleteuser,
   getAdmin,
   verifyAdmin,
+  getOrders,
+  orders,
 } = require("../controllers/testControllers");
 // const verifyAdmin = require("../middleTier/verifyAdmin");
 
@@ -48,6 +50,10 @@ testRouter.delete("/user/delete/:id", deleteuser);
 // admin routes
 testRouter.put("/user/admin/:email", verifyJwt, verifyAdmin, makeAdmin);
 testRouter.get("/admin/:email", verifyJwt, getAdmin);
+
+// purchase @ orders
+testRouter.get("/orders/:id", verifyJwt, getOrders);
+testRouter.post("/orders", orders);
 
 testRouter.delete("/testing2/:id", deleteTest);
 
